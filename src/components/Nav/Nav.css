@@ -1,0 +1,10 @@
+.class-active-nav-link {
+    color: red;
+    text-decoration: none;
+}
+
+.class-nav-link {
+    text-decoration: none;
+    margin: 0 15px;
+    color: white;
+}
