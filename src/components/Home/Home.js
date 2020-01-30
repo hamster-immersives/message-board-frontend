@@ -7,6 +7,8 @@ import Grid from '@material-ui/core/Grid';
 import SocialFeed from '../SocialFeed/SocialFeed';
 import Context from '../Context/Context';
 
+import FindPeople from '../FindPeople/FindPeople'
+
 const placeholder = 'https://www.fillmurray.com/640/360';
 
 
@@ -36,12 +38,24 @@ class Home extends Component {
                 {
                     isAuth ? (
                         <Grid container>
-                            <Grid item xs={7} sm={7}>
+                            <Grid item xs={7} sm={7} 
+                                style={{
+                                    paddingTop: '30px',
+                                    paddingLeft: '30px',
+                                    paddingRight: '15px'
+                                }}
+                            >
                                 <SocialFeed />
                             </Grid>
 
-                            <Grid item xs={5} sm={5}>
-                                List of users
+                            <Grid item xs={5} sm={5}
+                                      style={{
+                                        paddingTop: '30px',
+                                        paddingLeft: '30px',
+                                        paddingRight: '25px'
+                                    }}
+                            >
+                                <FindPeople />
                             </Grid>
 
                         </Grid>
