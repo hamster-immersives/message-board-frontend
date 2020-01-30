@@ -111,3 +111,21 @@ export const deleteCommentByID = async (postID, commentID) => {
     }
 
 }
+
+export const likeButton = async (postID) => {
+    try {
+        let success = await Axios.put('/api/post/like-post-by-id', {postID});
+        return success.data;
+    } catch (e) {
+        return e.response.message;
+    }
+}
+
+export const unlikeButton = async (postID) => {
+    try {
+        let success = await Axios.put('/api/post/unlike-post-by-id', {postID});
+        return success.data;
+    } catch (e) {
+        return e.response.message;
+    }
+}

@@ -7,6 +7,7 @@ import MainRouter from './MainRouter';
 import Context from './components/Context/Context';
 import { checkTokenAuth } from './components/lib/api'
 
+import Spinner from './components/Spinner/Spinner';
 
 const theme = createMuiTheme({
   palette: {
@@ -82,7 +83,18 @@ export default class App extends Component {
     })
   }
 
-  
+  updatePostArray = (post) => {
+
+    let copiedArray = Object.assign(this.state.posts, []);
+
+    
+
+    copiedArray.forEach(postItem => postItem._id === post._id ? postItem.likes = post.likes : '');
+    this.setState({
+      posts: copiedArray
+    })
+
+  }
 
   render() {
     return (
@@ -95,14 +107,19 @@ export default class App extends Component {
           posts: this.state.posts,
           getAllPosts: this.getAllPosts,
           createPost: this.createPost,
-          deletePostByID: this.deletePostByID
+          deletePostByID: this.deletePostByID,
+          updatePostArray: this.updatePostArray
         }}
       >
         <Router>
-          <MuiThemeProvider theme={theme}>
-            <MainRouter theme={theme} />
-          </MuiThemeProvider>
+
+          <React.Suspense fallback={<Spinner />}>
+            <MuiThemeProvider theme={theme}>
+              <MainRouter theme={theme} />
+            </MuiThemeProvider>
+          </React.Suspense>
         </Router> 
+        
       </Context.Provider>     
     )
   }

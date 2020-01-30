@@ -8,7 +8,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import CommentIcon from '@material-ui/icons/Comment';
 import Divider from '@material-ui/core/Divider'
-
+import jwt_decode from 'jwt-decode';
 
 import { withStyles } from "@material-ui/core/styles";
 import { Link } from 'react-router-dom'
@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom'
 import Comments from './Comments'
 import Context from "../Context/Context";
 
-import { deletePostByID } from '../lib/api'
+import { deletePostByID, likeButton, unlikeButton } from '../lib/api'
 
 const styles = theme => ({
   card: {
@@ -60,16 +60,39 @@ class Post extends Component {
 
   componentDidMount () {
     this.setState({
-      comments: this.props.post.comments
+      comments: this.props.post.comments,
+      likes: this.props.post.likes.length,
+      like: this.checkLike(this.props.post.likes)
     })
   }
 
-  checkLike = (likes) => {
-  
+  checkLike = (likesArray) => {
+    // let token = localStorage.getItem('jwtToken-reddit');
+    // let user = jwt_decode(token);
+    let match = likesArray.indexOf(this.context.user.id) !== -1;
+    return match;
   }
 
-  like = () => {
-    
+  like = async () => {
+
+    let likeAndUnlikeApiCall = this.state.like ? unlikeButton : likeButton;
+
+    try {
+
+      let success = await likeAndUnlikeApiCall(this.props.post._id);
+      console.log(success)
+      this.setState({
+        likes: success.likes.length,
+        like: this.checkLike(success.likes)
+      })
+
+      this.context.updatePostArray(success);
+
+    } catch (e) {
+      console.log(e);
+    }
+
+
   }
 
   updateComments = (comments) => {

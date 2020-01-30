@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Nav from './components/Nav/Nav';
-import Home from './components/Home/Home';
-import Signin from './components/Signin/Signin';
-import Signup from './components/Signup/Signup';
+// import Home from './components/Home/Home';
+//import Signin from './components/Signin/Signin';
+// import Signup from './components/Signup/Signup';
 import UserProfile from './components/UserProfile/UserProfile';
 
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+
+const Home = React.lazy(() => import('./components/Home/Home'))
+const Signin = React.lazy(() => import('./components/Signin/Signin'))
+const Signup = React.lazy(() => import('./components/Signup/Signup'))
 
 export default class MainRouter extends Component {
     render() {
