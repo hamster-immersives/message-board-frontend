@@ -13,6 +13,8 @@ const Home = React.lazy(() => import('./components/Home/Home'))
 const Signin = React.lazy(() => import('./components/Signin/Signin'))
 const Signup = React.lazy(() => import('./components/Signup/Signup'))
 const Profile = React.lazy(() => import('./components/Profile/Profile'))
+const OtherUserProfileHome = React.lazy(() => import('./components/OtherUserProfile/OtherUserProfileHome'))
+
 
 export default class MainRouter extends Component {
     render() {
@@ -28,6 +30,12 @@ export default class MainRouter extends Component {
                         exact 
                         path='/user-profile'
                         component={Profile}
+                        />
+
+                    <PrivateRoute 
+                        exact 
+                        path='/user/:id'
+                        component={OtherUserProfileHome}
                         />
                 </Switch>
             </>

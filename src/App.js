@@ -5,7 +5,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { indigo, pink } from '@material-ui/core/colors';
 import MainRouter from './MainRouter';
 import Context from './components/Context/Context';
-import { checkTokenAuth } from './components/lib/api'
+import { checkTokenAuth, getAllPosts } from './components/lib/api'
 
 import Spinner from './components/Spinner/Spinner';
 
@@ -37,13 +37,15 @@ export default class App extends Component {
     posts: []
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let user = checkTokenAuth()
 
     if (user) {
       this.handleSignin(user)
+   
     } 
   }
+
 
   getAllPosts = (posts) => {
     this.setState({
@@ -63,7 +65,8 @@ export default class App extends Component {
       isAuth: true, 
       user: {
         username: userInfo.username,
-        id: userInfo.id
+        id: userInfo.id,
+        userCreated: userInfo.userCreated
       }
     })
   }

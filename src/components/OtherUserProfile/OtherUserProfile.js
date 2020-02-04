@@ -10,14 +10,12 @@ import EditIcon from '@material-ui/icons/Edit';
 import Divider from "@material-ui/core/Divider";
 
 import Context from "../Context/Context";
-
-import DeleteUser from './DeleteUser'
-import {Redirect, Link} from 'react-router-dom'
-import FollowProfileButton from './FollowProfileButton'
-import ProfileTabs from './ProfileTabs'
+import {Redirect, Link, withRouter} from 'react-router-dom'
+import OtherUserFollowProfileButton from './OtherUserFollowProfileButton'
+import OtherUserProfileTabs from './OtherUserProfileTabs'
 import Spinner from '../Spinner/Spinner';
 
-import { getUserFollowerAndFollowing, checkTokenAuth } from '../lib/api'
+import { checkTokenAuth, getUserProfileByID, followUser, unfollowUser } from '../lib/api'
 
 
 const styles = theme => ({
@@ -39,44 +37,64 @@ const styles = theme => ({
   }
 })
 
-class Profile extends Component {
+class OtherUserProfile extends Component {
 
   static contextType = Context;
 
- 
+
     state = {
-      user: {following:[], followers:[]},
+      user: {following:[], followers:[], username: '', email: '', id: ''},
       following: false,
+      posts: [],
       isLoading: false
     }
 
 
 
-  componentDidMount = async () => {
-    try {
-      await checkTokenAuth();
-      let success = await getUserFollowerAndFollowing();
-     
-      this.context.getAllPosts(success[1])
 
+  componentDidMount = async () => {
+
+    try {
+
+      await checkTokenAuth();
+ 
+      let success = await getUserProfileByID(this.props.match.params.id);
+      this.context.getAllPosts(success.fetchUserPost);
       this.setState({
-        isLoading: true,
+        isLoading: true, 
         user: {
-          following: success[0].following,
-          followers: success[0].followers
+          following: success.fetchUserProfile.following, 
+          followers: success.fetchUserProfile.followers,
+          username: success.fetchUserProfile.username, 
+          email: success.fetchUserProfile.email,
+          _id: success.fetchUserProfile._id
         }
       })
 
 
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
+ 
   }
+
+  clickFollowButton = async () => {
+   
+  }
+
+  clickUnfollowButton = async () => {
+
+   
+
+  }
+
   render() {
     const {classes} = this.props
 
+    // const photoUrl = this.state.user._id
+    //           ? `/api/users/photo/${this.state.user._id}?${new Date().getTime()}`
+    //           : '/api/users/defaultphoto'
     let photoUrl;
-
     let isLoading;
     if (!this.state.isLoading) {
        isLoading = <Spinner />
@@ -84,22 +102,20 @@ class Profile extends Component {
       isLoading = (
         <Paper className={classes.root} elevation={4}>
         <Typography type="title" className={classes.title}>
-          Profile
+          User Profile
         </Typography>
         <List dense>
           <ListItem>
             <ListItemAvatar>
               <Avatar src={photoUrl} className={classes.bigAvatar}/>
             </ListItemAvatar>
-            <ListItemText primary={this.context.user.username} secondary={this.context.user.email}/> 
-            <ListItemSecondaryAction>
-                  <Link to={"/user/edit/" + this.context.user.id}>
-                    <IconButton aria-label="Edit" color="primary">
-                      <EditIcon/>
-                    </IconButton>
-                  </Link>
-                  <DeleteUser userId={this.state.user._id}/>
-                </ListItemSecondaryAction>
+            <ListItemText primary={this.state.user.username} secondary={this.state.user.email}/> 
+            <OtherUserFollowProfileButton 
+              variant="contained" 
+              following={this.state.user.following} 
+              onButtonFollow={this.clickFollowButton}
+              onButtonUnfollow={this.clickUnfollowButton}
+              />
           </ListItem>
           <Divider/>
           <ListItem>
@@ -107,7 +123,7 @@ class Profile extends Component {
               />
           </ListItem>
         </List>
-        <ProfileTabs user={this.state.user} posts={this.state.posts} />
+        <OtherUserProfileTabs user={this.state.user} />
       </Paper>
       )
     }
@@ -121,4 +137,5 @@ class Profile extends Component {
 }
 
 
-export default withStyles(styles)(Profile)
+export default withStyles(styles)(withRouter(OtherUserProfile))
+

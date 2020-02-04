@@ -159,3 +159,14 @@ export const getUserFollowerAndFollowing = async () => {
         return e.response.message;
     }
 }
+
+export const getUserProfileByID = async (id) => {
+
+    try {
+        let success = await Axios.get(`/api/users/get-user-by-id/${id}`);
+        return success.data;
+    } catch (e) {
+        return e.response.message;
+    }
+
+} 
