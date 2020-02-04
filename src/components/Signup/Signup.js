@@ -88,8 +88,6 @@ class Signup extends Component {
             email: this.state.email
         }
 
-        let response = await signup(userInfo);
-
         try {
             await signup(userInfo);
             this.setState({

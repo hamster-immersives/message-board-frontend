@@ -12,6 +12,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 const Home = React.lazy(() => import('./components/Home/Home'))
 const Signin = React.lazy(() => import('./components/Signin/Signin'))
 const Signup = React.lazy(() => import('./components/Signup/Signup'))
+const Profile = React.lazy(() => import('./components/Profile/Profile'))
 
 export default class MainRouter extends Component {
     render() {
@@ -26,7 +27,7 @@ export default class MainRouter extends Component {
                     <PrivateRoute 
                         exact 
                         path='/user-profile'
-                        component={UserProfile}
+                        component={Profile}
                         />
                 </Switch>
             </>

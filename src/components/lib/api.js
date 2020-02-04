@@ -129,3 +129,33 @@ export const unlikeButton = async (postID) => {
         return e.response.message;
     }
 }
+
+export const getAllUsers = async () => {
+    try {
+
+        let success = await Axios.get(`/api/users/get-all-users`);
+        return success.data;
+    } catch (e) {
+        return e.response.message;
+    }
+}
+
+export const followUser = async (user) => {
+
+    try {
+        let success = await Axios.put(`/api/users/follow-user`, {user});
+        return success.data;
+    } catch (e) {
+        return e.response.message;
+    }
+
+}
+
+export const getUserFollowerAndFollowing = async () => {
+    try {
+        let success = await Axios.get('/api/users/get-user-follower-and-following');
+        return success.data;
+    } catch (e) {   
+        return e.response.message;
+    }
+}

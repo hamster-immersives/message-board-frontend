@@ -15,6 +15,8 @@ export default class PostList extends Component {
             console.log(e);
         }
     }
+
+    
     render() {
         return (
             <div>

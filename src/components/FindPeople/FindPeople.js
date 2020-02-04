@@ -39,21 +39,32 @@ const styles = theme => ({
 })
 class FindPeople extends Component {
   state = {
-      users: [{
-          _id: 1,
-          username: 'hamster overlord'
-      }],
+      users: [],
       open: false
   }
   componentDidMount = async () => {
     try {
-      
+      let success = await getAllUsers();
+
+      this.setState({
+          users: success
+      })
+
     } catch (e) {
       console.log(e)
     }
   }
   clickFollow = async (user, index) => {
     try {
+
+        let success = await followUser(user);
+        let toFollowList = this.state.users;
+        toFollowList.splice(index, 1);
+        this.setState({
+            user: toFollowList,
+            open: true,
+            followMessage: `Following ${success.username}`
+        })
 
     } catch (e) {
       console.log(e);
@@ -83,7 +94,7 @@ class FindPeople extends Component {
                         <VisibilityIcon/>
                       </IconButton>
                     </Link>
-                    <Button aria-label="Follow" variant="contained" color="primary" onClick={this.clickFollow.bind()}>
+                    <Button aria-label="Follow" variant="contained" color="primary" onClick={this.clickFollow.bind(this, item, i)}>
                       Follow
                     </Button>
                   </ListItemSecondaryAction>
